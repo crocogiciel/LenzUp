@@ -100,7 +100,7 @@ function InstallPrompt() {
 
   useEffect(() => {
     setIsIOS(
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+      /iPad|iPhone|iPod/.test(navigator.userAgent)
     )
 
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
