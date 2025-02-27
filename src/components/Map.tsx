@@ -63,7 +63,7 @@ function Recenter({ position }: { position: [number, number] }) {
     const map = useMap();
     useEffect(() => {
         map.setView(position, 20);
-    }, [position]);
+    }, [position, map]);
     return null;
 }
 

@@ -120,7 +120,7 @@ const InstallPrompt = ({ isIOS }: { isIOS: boolean }) => {
   );
 }
 
-export default function Page() {
+function LenzUpApp() {
   const [isIOS, setIsIOS] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
 
@@ -137,3 +137,5 @@ export default function Page() {
     </div>
   )
 }
+
+export default LenzUpApp;
