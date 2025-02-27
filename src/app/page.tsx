@@ -96,7 +96,7 @@ function PushNotificationManager() {
   )
 }
 
-const InstallPrompt = ({isIOS }: {isIOS: boolean}) => {
+const InstallPrompt = ({ isIOS }: { isIOS: boolean }) => {
 
   return (
     <div>
@@ -133,7 +133,7 @@ export default function Page() {
 
   return (
     <div>
-      {isStandalone ? <HomeScreen /> : <div><PushNotificationManager /> <InstallPrompt isIOS={isIOS}/></div>}
+      {isStandalone ? <HomeScreen /> : <div><PushNotificationManager /> <InstallPrompt isIOS={isIOS} /></div>}
     </div>
   )
 }
