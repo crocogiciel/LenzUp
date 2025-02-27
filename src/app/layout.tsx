@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { NavItem } from "./page";
+
+import { Home, Map, User } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,11 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="fr">
+      <body className="flex flex-col h-screen">
+        <header className="fixed top-0 left-0 w-full shadow-md border-b py-3 px-4 flex justify-center items-center z-10">
+          <h1 className="text-lg font-bold">LenzUp</h1>
+        </header>
+
+        <main className="flex-grow pt-12 pb-16">{children}</main>
+
+        <nav className="fixed bottom-0 left-0 w-full shadow-md border-t flex justify-around py-3">
+          <NavItem href="/" icon={<Home size={24} />} label="Accueil" />
+          <NavItem href="/map" icon={<Map size={24} />} label="Carte" />
+          <NavItem href="/profile" icon={<User size={24} />} label="Profil" />
+        </nav>
       </body>
     </html>
   );

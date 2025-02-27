@@ -11,7 +11,6 @@ webpush.setVapidDetails(
 let subscription: webpush.PushSubscription | null = null
 
 export async function subscribeUser(sub: webpush.PushSubscription) {
-    console.log("subscribe User: " + sub)
     subscription = sub
     // In a production environment, you would want to store the subscription in a database
     // For example: await db.subscriptions.create({ data: sub })

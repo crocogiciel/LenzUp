@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
 import Link from 'next/link'
-
-import { Home, Map, User } from "lucide-react";
+import nextConfig from '../../next.config'
+import HomeScreen from './home/page'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -97,21 +97,7 @@ function PushNotificationManager() {
   )
 }
 
-function InstallPrompt() {
-  const [isIOS, setIsIOS] = useState(false)
-  const [isStandalone, setIsStandalone] = useState(false)
-
-  useEffect(() => {
-    setIsIOS(
-      /iPad|iPhone|iPod/.test(navigator.userAgent)
-    )
-
-    setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
-  }, [])
-
-  if (isStandalone) {
-    return <MainPage />// Don't show install button if already installed
-  }
+const InstallPrompt = ({isIOS }: {isIOS: boolean}) => {
 
   return (
     <div>
@@ -132,31 +118,32 @@ function InstallPrompt() {
         </p>
       )}
     </div>
-  )
+  );
 }
 
-function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+export const NavItem = ({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) => {
   return (
-    <Link href={href} className="flex flex-col items-center text-gray-700 hover:text-blue-500">
+    <Link href={href} className="flex flex-col items-center hover:text-blue-500">
       {icon}
       <span className="text-xs">{label}</span>
     </Link>
   );
 }
 
-const MainPage = () => {
-  return <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md border-t flex justify-around py-3">
-          <NavItem href="/" icon={<Home size={24} />} label="Accueil" />
-          <NavItem href="/map" icon={<Map size={24} />} label="Carte" />
-          <NavItem href="/profile" icon={<User size={24} />} label="Profil" />
-        </nav>
-}
-
 export default function Page() {
+  const [isIOS, setIsIOS] = useState(false)
+  const [isStandalone, setIsStandalone] = useState(false)
+
+  useEffect(() => {
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent)
+    )
+    setIsStandalone(window.matchMedia('(display-mode: standalone)').matches || (nextConfig?.env?.DEVELOPMENT_MODE_ON === "true"))
+  }, [])
+
   return (
     <div>
-      <PushNotificationManager />
-      <InstallPrompt />
+      {isStandalone ? <HomeScreen /> : <div><PushNotificationManager /> <InstallPrompt isIOS={isIOS}/></div>}
     </div>
   )
 }
