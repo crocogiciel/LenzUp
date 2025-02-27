@@ -1,6 +1,6 @@
 {
-    "short_name": "My PWA",
-    "name": "My Progressive Web App",
+    "short_name": "LenzUp",
+    "name": "Lenz Up",
     "description": "A simple PWA built with React and Next.js",
     "start_url": "/",
     "display": "standalone",
