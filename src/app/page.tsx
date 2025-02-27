@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
+import Link from 'next/link'
+
+import { Home, Map, User } from "lucide-react";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -107,7 +110,7 @@ function InstallPrompt() {
   }, [])
 
   if (isStandalone) {
-    return null // Don't show install button if already installed
+    return <MainPage />// Don't show install button if already installed
   }
 
   return (
@@ -130,6 +133,23 @@ function InstallPrompt() {
       )}
     </div>
   )
+}
+
+function NavItem({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+  return (
+    <Link href={href} className="flex flex-col items-center text-gray-700 hover:text-blue-500">
+      {icon}
+      <span className="text-xs">{label}</span>
+    </Link>
+  );
+}
+
+const MainPage = () => {
+  return <nav className="fixed bottom-0 left-0 w-full bg-white shadow-md border-t flex justify-around py-3">
+          <NavItem href="/" icon={<Home size={24} />} label="Accueil" />
+          <NavItem href="/map" icon={<Map size={24} />} label="Carte" />
+          <NavItem href="/profile" icon={<User size={24} />} label="Profil" />
+        </nav>
 }
 
 export default function Page() {
