@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
-import Link from 'next/link'
 import nextConfig from '../../next.config'
 import HomeScreen from './home/page'
 
@@ -118,15 +117,6 @@ const InstallPrompt = ({isIOS }: {isIOS: boolean}) => {
         </p>
       )}
     </div>
-  );
-}
-
-export const NavItem = ({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) => {
-  return (
-    <Link href={href} className="flex flex-col items-center hover:text-blue-500">
-      {icon}
-      <span className="text-xs">{label}</span>
-    </Link>
   );
 }
 

@@ -2,10 +2,10 @@
 
 import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import L from "leaflet";
+import { Icon } from "leaflet";
 
 // Icône personnalisée pour le marqueur utilisateur
-const userIcon = new L.Icon({
+const userIcon = new Icon({
   iconUrl: "/marker.png", // Mets une icône personnalisée ici
   iconSize: [30, 30],
   iconAnchor: [15, 30],
@@ -44,6 +44,6 @@ function Recenter({ position }: { position: [number, number] }) {
   const map = useMap();
   useEffect(() => {
     map.setView(position, 13);
-  }, [position]);
+  }, [position, map]);
   return null;
 }
