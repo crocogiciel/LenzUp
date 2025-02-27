@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
-import { Icon } from "leaflet";
+import { DivIcon } from "leaflet";
 
 // Icône personnalisée pour le marqueur utilisateur
+/*
 const userIcon = new Icon({
-    iconUrl: "/marker.png", // Mets une icône personnalisée ici
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
+    iconUrl: "/current_position_marker.png", // Mets une icône personnalisée ici
+    iconSize: [15, 15],
+    iconAnchor: [7.5, 7.5],
 });
+*/
 
 const Map = () => {
     const [position, setPosition] = useState<[number, number] | undefined>(undefined);
@@ -27,11 +29,11 @@ const Map = () => {
             {position ? (
                 <MapContainer center={position} zoom={13} className="h-full w-full">
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    <Marker position={position} icon={userIcon} />
+                    <Marker position={position} icon={new DivIcon({className: "currentPosMarker", iconSize: [10, 10]})} />
                     <Recenter position={position} />
                 </MapContainer>
             ) : (
-                <p className="text-center mt-20">📍 Récupération de votre position...</p>
+                <p className="text-center mt-20">Récupération de votre position...</p>
             )}
         </div>
     );
