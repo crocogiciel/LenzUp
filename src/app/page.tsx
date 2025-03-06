@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
 import nextConfig from '../../next.config'
 import HomeScreen from './home/page'
+import { signInAnonymouslyAndSaveProfile, auth } from "@/lib/firebase";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { requestPermission } from '@/lib/notifications'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -123,17 +126,38 @@ const InstallPrompt = ({ isIOS }: { isIOS: boolean }) => {
 function LenzUpApp() {
   const [isIOS, setIsIOS] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) {
+        // Si l'utilisateur n'est pas connecté, on le connecte anonymement
+        const newUser = await signInAnonymouslyAndSaveProfile();
+        if (!newUser) {
+          console.log("Unable to create new user");
+          return;
+        }
+        console.log("User logged in from new account");
+        setUser(newUser);
+        requestPermission(newUser.uid);
+      } else {
+        console.log("User logged in from existing account");
+        setUser(firebaseUser);
+        requestPermission(firebaseUser.uid);
+      }
+    });
+    
     setIsIOS(
       /iPad|iPhone|iPod/.test(navigator.userAgent)
     )
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches || (nextConfig?.env?.DEVELOPMENT_MODE_ON === "true"))
+
+    return () => unsubscribe();
   }, [])
 
   return (
     <div>
-      {isStandalone ? <HomeScreen /> : <div><PushNotificationManager /> <InstallPrompt isIOS={isIOS} /></div>}
+      {isStandalone ? <HomeScreen user={user}/> : <div><PushNotificationManager /> <InstallPrompt isIOS={isIOS} /></div>}
     </div>
   )
 }
